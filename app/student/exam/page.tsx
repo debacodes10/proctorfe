@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { apiRequest } from "../../lib/api";
 import { getToken } from "../../lib/auth";
+import { getApiBaseUrl } from "../../lib/config";
 
 export default function ExamPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -64,7 +65,7 @@ export default function ExamPage() {
         formData.append("file", blob, "frame.jpg");
 
         try {
-          const apiBase = process.env.NEXT_PUBLIC_API_URL!;
+          const apiBase = getApiBaseUrl();
           const res = await fetch(
             `${apiBase}/cv/analyze-frame?session_id=${activeSessionId}`,
             {
@@ -190,7 +191,7 @@ export default function ExamPage() {
   const endSessionOnServer = useCallback(async (activeSessionId: number) => {
     if (!token) return;
 
-    const apiBase = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+    const apiBase = getApiBaseUrl();
     const paths = [
       `/sessions/${activeSessionId}/end`,
       `/sessions/end?session_id=${activeSessionId}`,

@@ -21,10 +21,10 @@ It provides student exam session flows and admin monitoring views.
 
 ## Environment
 
-Create `.env.local`:
+Create `.env.local` (use `.env.example` as template):
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:8080
+NEXT_PUBLIC_API_URL=https://your-backend-url.example.com
 ```
 
 ## Run Locally

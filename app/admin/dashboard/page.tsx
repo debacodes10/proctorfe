@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { getToken } from "../../lib/auth";
+import { getApiBaseUrl } from "../../lib/config";
 
 type SessionInfo = {
   id?: number | string;
@@ -10,7 +11,7 @@ type SessionInfo = {
   [key: string]: unknown;
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+const API_BASE = getApiBaseUrl();
 
 function asArray<T>(data: unknown): T[] {
   if (Array.isArray(data)) return data as T[];

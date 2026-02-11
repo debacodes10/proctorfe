@@ -1,4 +1,6 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+import { getApiBaseUrl } from "./config";
+
+const API_URL = getApiBaseUrl();
 
 export async function apiRequest(
   path: string,

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { setToken } from "../lib/auth";
+import { getApiBaseUrl } from "../lib/config";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,7 +20,8 @@ export default function LoginPage() {
       form.append("username", email);
       form.append("password", password);
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+      const apiBase = getApiBaseUrl();
+      const res = await fetch(`${apiBase}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
