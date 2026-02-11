@@ -1,8 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f3f6fb;
+  --foreground: #0f172a;
+  --surface: #ffffff;
+  --surface-soft: #eef3ff;
+  --border: #dbe5f4;
+  --brand: #1d4ed8;
+  --brand-strong: #1e40af;
+  --success: #15803d;
+  --muted: #5b6473;
 }
 
 @theme inline {
@@ -12,15 +19,97 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  background:
+    radial-gradient(circle at top left, #dfe9ff 0%, transparent 46%),
+    radial-gradient(circle at top right, #e6efff 0%, transparent 43%),
+    var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), "Segoe UI", sans-serif;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.app-shell {
+  min-height: 100vh;
+  width: 100%;
+  padding: 2rem 1rem;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.surface-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08);
+}
+
+.label-soft {
+  color: var(--muted);
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.32rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: #f7faff;
+}
+
+.status-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--muted);
+}
+
+.status-dot.active {
+  background: var(--success);
+}
+
+.status-dot.pending {
+  background: #ea580c;
+}
+
+.status-dot.idle {
+  background: #64748b;
+}
+
+.btn-primary {
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--brand), var(--brand-strong));
+  color: white;
+  font-weight: 600;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  box-shadow: 0 8px 22px rgba(29, 78, 216, 0.32);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 11px 25px rgba(29, 78, 216, 0.38);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.form-input {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #f9fbff;
+  padding: 0.65rem 0.75rem;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: #8fb1ff;
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.14);
 }
