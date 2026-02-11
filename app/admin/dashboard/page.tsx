@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { getToken } from "../../lib/auth";
+import { apiRequest } from "../../lib/api";
 import { getApiBaseUrl } from "../../lib/config";
 
 type SessionInfo = {
@@ -55,17 +56,7 @@ export default function AdminDashboardPage() {
     setLoadingSessions(true);
     setSessionError("");
     try {
-      const res = await fetch(`${API_BASE}/admin/sessions`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-
-      if (!res.ok) {
-        throw new Error(`Failed to load sessions (${res.status})`);
-      }
-
-      const json = await res.json();
+      const json = await apiRequest("/admin/sessions", "GET", undefined, authToken);
       const allSessions = asArray<SessionInfo>(json);
       setSessions(allSessions);
     } catch (err) {

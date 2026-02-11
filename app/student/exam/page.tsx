@@ -1,9 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { apiRequest } from "../../lib/api";
+import { apiRequest, authFetch } from "../../lib/api";
 import { getToken } from "../../lib/auth";
-import { getApiBaseUrl } from "../../lib/config";
 
 export default function ExamPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -65,16 +64,13 @@ export default function ExamPage() {
         formData.append("file", blob, "frame.jpg");
 
         try {
-          const apiBase = getApiBaseUrl();
-          const res = await fetch(
-            `${apiBase}/cv/analyze-frame?session_id=${activeSessionId}`,
+          const res = await authFetch(
+            `/cv/analyze-frame?session_id=${activeSessionId}`,
             {
               method: "POST",
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
               body: formData,
-            }
+            },
+            token
           );
 
           if (!res.ok) {
@@ -191,7 +187,6 @@ export default function ExamPage() {
   const endSessionOnServer = useCallback(async (activeSessionId: number) => {
     if (!token) return;
 
-    const apiBase = getApiBaseUrl();
     const paths = [
       `/sessions/${activeSessionId}/end`,
       `/sessions/end?session_id=${activeSessionId}`,
@@ -199,12 +194,9 @@ export default function ExamPage() {
 
     for (const path of paths) {
       try {
-        const res = await fetch(`${apiBase}${path}`, {
+        const res = await authFetch(path, {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        }, token);
         if (res.ok) return;
       } catch (err) {
         console.error("Session end request failed:", err);

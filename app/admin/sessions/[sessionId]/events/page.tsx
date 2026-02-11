@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { apiRequest } from "../../../../lib/api";
 import { getToken } from "../../../../lib/auth";
 import { getApiBaseUrl } from "../../../../lib/config";
 
@@ -49,15 +50,7 @@ export default function SessionEventsPage() {
     setLoadingEvents(true);
     setEventsError("");
     try {
-      const res = await fetch(`${API_BASE}/admin/sessions/${sessionId}/events`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!res.ok) {
-        throw new Error(`Failed to load events (${res.status})`);
-      }
-      const json = await res.json();
+      const json = await apiRequest(`/admin/sessions/${sessionId}/events`, "GET", undefined, token);
       setEvents(asArray<SessionEvent>(json));
     } catch (err) {
       setEvents([]);

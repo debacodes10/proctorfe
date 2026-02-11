@@ -29,9 +29,21 @@ export default function LoginPage() {
         body: form.toString()
       });
 
-      if (!res.ok) throw new Error("Invalid credentials");
+      if (res.status === 401) {
+        const errText = await res.text().catch(() => "");
+        console.error("[AUTH] 401 Unauthorized on POST /auth/login.", errText);
+        throw new Error("Invalid credentials");
+      }
+
+      if (!res.ok) {
+        const errText = await res.text().catch(() => "");
+        throw new Error(errText || "Login request failed");
+      }
 
       const data = await res.json();
+      if (!data?.access_token) {
+        throw new Error("Login response missing access_token");
+      }
 
       setToken(data.access_token);
 
@@ -45,7 +57,8 @@ export default function LoginPage() {
         router.push("/student/exam");
       }
 
-    } catch {
+    } catch (err) {
+      console.error("[AUTH] Login flow failed:", err);
       setError("Login failed. Check credentials.");
     }
   }
